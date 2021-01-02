@@ -31,5 +31,13 @@ class Themes_model extends CI_model
     }
     return $result;
   }
+
+  public function update ($data = null, $id = null) {
+    $result = null;
+    if ($data != null || $id != null) {
+      $result = $this->db->update($this->table, $data, array ('theme_id' => $id));
+    }
+    return $result;
+  }
   
 }

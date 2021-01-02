@@ -22,12 +22,12 @@
 
     public function insert () {
       $result = $this->Constant_model->api_format();
-      $post = $this->input->post();
       
+      $post = $this->input->post();
       $this->form_validation->set_rules('name', 'Name', 'trim|required');
       $this->form_validation->set_rules('description', 'Description', 'trim|required');
       if ($this->form_validation->run() == false) {
-        $result = $this->Constant_model(0, $this->form_validation->error_array(), 'Failed to insert data');
+        $result = $this->Constant_model->api_format(0, $this->form_validation->error_array(), 'Failed to insert data');
       } else {
         $themes_id = $this->Constant_model->generate_id('themes', 'THM');
         $created_date = new DateTime();
@@ -43,6 +43,29 @@
         $result = $this->Constant_model->api_format($response_code, null, 'Data inserted successfuly');
       }
       echo json_encode($result);
+      
+    }
+    public function update ($id) {
+      $result = $this->Constant_model->api_format();
+      $post = $this->input->post();
+      
+      $this->form_validation->set_rules('name', 'Name', 'trim|required');
+      $this->form_validation->set_rules('description', 'Description', 'trim|required');
+      if ($this->form_validation->run() == false) {
+        $result = $this->Constant_model->api_format(0, $this->form_validation->error_array(), 'Failed to insert data');
+      } else {
+        $created_date = new DateTime();
+        $data = array (
+          'name' => $post['name'],
+          'description' => $post['description'],
+          'updated_at' => $created_date->format("Y-m-d H:i:s")
+        );
+        $response_code = ($this->themes->update($data, $id))?1 : 0;
+        $result = $this->Constant_model->api_format($response_code, null, 'Data updated successfuly');
+      }
+      echo json_encode($result);
+    }
+    public function delete ($id) {
       
     }
   }
