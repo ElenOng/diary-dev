@@ -54,11 +54,11 @@
       if ($this->form_validation->run() == false) {
         $result = $this->Constant_model->api_format(0, $this->form_validation->error_array(), 'Failed to insert data');
       } else {
-        $created_date = new DateTime();
+        $updated_date = new DateTime();
         $data = array (
           'name' => $post['name'],
           'description' => $post['description'],
-          'updated_at' => $created_date->format("Y-m-d H:i:s")
+          'updated_at' => $updated_date->format("Y-m-d H:i:s")
         );
         $response_code = ($this->themes->update($data, $id))?1 : 0;
         $result = $this->Constant_model->api_format($response_code, null, 'Data updated successfuly');
@@ -66,7 +66,12 @@
       echo json_encode($result);
     }
     public function delete ($id) {
-      
+      $result = $this->Constant_model->api_format();
+      $post = $this->input->post();
+
+      $data = array ('theme_id' => $id);
+      $response_code = ($this->themes->delete($data))?1 : 0;
+
     }
   }
   

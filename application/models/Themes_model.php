@@ -39,5 +39,13 @@ class Themes_model extends CI_model
     }
     return $result;
   }
+  public function ($data = null) {
+    $result = null;
+    if ($data != null) {
+      $deleted_date = new DateTime();
+      $result = $this->db->update($this->table, array ('deleted_at' => $deleted_date->format("Y-m-d H:i:s")), $data);
+    }
+    return $result;
+  }
   
 }
