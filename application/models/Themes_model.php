@@ -15,11 +15,13 @@ class Themes_model extends CI_model
           'description' => $post['search']
         );
         $this->db->or_like($data);
+        $result = $this->db->get($this->table)->result();
+
       } else {
         $data = array ('theme_id' => $post['theme_id']);
         $this->db->where($data);
+        $result = $this->db->get($this->table)->row();
       }
-      $result = $this->db->get($this->table)->row();
     }
     return $result;
   }
@@ -39,7 +41,7 @@ class Themes_model extends CI_model
     }
     return $result;
   }
-  public function ($data = null) {
+  public function delete ($data = null) {
     $result = null;
     if ($data != null) {
       $deleted_date = new DateTime();

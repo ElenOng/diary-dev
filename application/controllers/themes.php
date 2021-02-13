@@ -10,13 +10,15 @@
     
     public function index () {
       $result = $this->Constant_model->api_format();
-      $post = $this->input->post();
-      $data = $this->themes->getData($post);
-      if ($data != null) {
-        $result = $this->Constant_model->api_format (1, $data, 'Data loaded successfuly');
-      } else {
-        $result = $this->Constant_model->api_format (0, $data, 'There is no data loaded');
-      }
+      $postdata = json_decode($this->input->post("postdata"));
+      $data = array (
+        "theme_id" => $postdata->data->theme_id,
+        "search" => $postdata->data->search
+      );
+      $result["data"] = $this->themes->getData($data);
+      $result["response_code"] = ($result["data"] != null)? 1 : 0;
+      $result["message"] = "Themes data loaded successfuly";
+
       echo json_encode($result);
     }
 
@@ -71,7 +73,9 @@
 
       $data = array ('theme_id' => $id);
       $response_code = ($this->themes->delete($data))?1 : 0;
+      $result = $this->Constant_model->api_format($response_code, null, 'Data deleted  successfuly');
 
+      echo json_encode($result);
     }
   }
   
