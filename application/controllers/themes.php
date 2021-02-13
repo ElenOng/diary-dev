@@ -25,7 +25,15 @@
     public function insert () {
       $result = $this->Constant_model->api_format();
       
-      $post = $this->input->post();
+      $postdata = json_decode($this->input->post("postdata"));
+      $post = array (
+        "name" => $postdata->data->name,
+        "description" => $postdata->data->description
+      );
+      
+      $_POST["name"] = $post["name"];
+      $_POST["description"] = $post["description"];
+      
       $this->form_validation->set_rules('name', 'Name', 'trim|required');
       $this->form_validation->set_rules('description', 'Description', 'trim|required');
       if ($this->form_validation->run() == false) {
