@@ -6,7 +6,11 @@ class Themes_model extends CI_model
   
   public function getData ($post = null) {
     $result = null;
-    if ($post['theme_id'] == null && $post['search'] == null) {
+    if ($post['theme_id'] == null && $post['search'] == null && $post["deleted"] == 0) {
+      $this->db->where('deleted_at', null);
+      $result = $this->db->get($this->table)->result();
+    }
+    elseif ($post['theme_id'] == null && $post['search'] == null && $post["deleted"] == 1) {
       $result = $this->db->get($this->table)->result();
     } else {
       if ($post['theme_id'] == null) {

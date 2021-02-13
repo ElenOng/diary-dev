@@ -13,7 +13,8 @@
       $postdata = json_decode($this->input->post("postdata"));
       $data = array (
         "theme_id" => $postdata->data->theme_id,
-        "search" => $postdata->data->search
+        "search" => $postdata->data->search,
+        "deleted" => $postdata->data->delete
       );
       $result["data"] = $this->themes->getData($data);
       $result["response_code"] = ($result["data"] != null)? 1 : 0;
@@ -33,7 +34,7 @@
       
       $_POST["name"] = $post["name"];
       $_POST["description"] = $post["description"];
-      
+
       $this->form_validation->set_rules('name', 'Name', 'trim|required');
       $this->form_validation->set_rules('description', 'Description', 'trim|required');
       if ($this->form_validation->run() == false) {
@@ -57,7 +58,14 @@
     }
     public function update ($id) {
       $result = $this->Constant_model->api_format();
-      $post = $this->input->post();
+      $postdata = json_decode($this->input->post("postdata"));
+      $post = array (
+        "name" => $postdata->data->name,
+        "description" => $postdata->data->description
+      );
+      
+      $_POST["name"] = $post["name"];
+      $_POST["description"] = $post["description"];
       
       $this->form_validation->set_rules('name', 'Name', 'trim|required');
       $this->form_validation->set_rules('description', 'Description', 'trim|required');
